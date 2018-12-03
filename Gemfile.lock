@@ -219,6 +219,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  activestorage
   autoprefixer-rails
   awesome_print
   aws-sdk-s3
