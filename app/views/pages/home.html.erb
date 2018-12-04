@@ -1,24 +1,17 @@
 <div class="container">
   <div id="left-tab" class="mytab">
-    <h6 id="project_name"></h6>
-    <h6 id="project_num"></h6>
+    <h1 id="project_name"></h1>
+    <h1 id="project_num"></h1>
+    <h1 id="type_action"></h1>
+    <div class="form-container" id="formstripe">
+    </div>
     <% if user_signed_in? %>
-      <input type="number" name="amount" class="amounts">
+      <input type="number" name="amount" id="inp_amount">
       <ul>
         <li id="pledge">PLEDGE</li>
         <li id="guarantee">GUARANTEE</li>
       </ul>
-      <%= form_tag(:controller => "pledges", :action => "create", :method => "POST") do %>
-        <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-        data-key="<%= Rails.configuration.stripe[:publishable_key] %>"
-        data-name=""
-        data-email="<%= current_user.email %>"
-        data-description=""
-        data-amount="0"
-        data-typeaction="0"
-        data-currency="eur">
-        </script>
-      <% end %>
+      <button type='submit' id='topay' value='Pledge/Guarantee'>
     <% end %>
   </div>
   <div class="row">
@@ -75,21 +68,11 @@
 <script>
   //document.getElementById('left-tab').style="display:none;";
 
-  document.querySelectorAll('.card-proj').forEach((card) => {
-    card.addEventListener('click', displayStripeForm);
-  });
+  document.getElementById('topay').addEventListener('click', submitData);
 
-  function displayStripeForm() {
-    //document.getElementById('left-tab').style="display:block;";
-    const formstrp = document.querySelector('.stripe-button');
-    //document.getElementById('project_name').value = event.target.dataset.projname;
-    //document.getElementById('project_num').value = event.target.dataset.id;
-    console.log("displayStripeForm");
-    console.log(event.currentTarget.dataset.projname);
-    formstrp.dataset.name=event.currentTarget.dataset.projname;
-    console.log(formstrp.dataset.name);
-    formstrp.dataset.description=event.currentTarget.dataset.id;
-  }
+  document.querySelectorAll('.card-proj').forEach((card) => {
+    card.addEventListener('click', storeCardData);
+  });
 
   document.querySelectorAll('li').forEach((li) => {
     if (li.id === 'pledge' || li.id === 'guarantee') {
@@ -97,24 +80,44 @@
     }
   });
 
-  function changeDescription(event) {
-    let val = "";
-    document.querySelectorAll('.amounts').forEach((amount) => {
-      val = amount.value;
-    });
-    const formstr = document.querySelector('.stripe-button');
-    console.log(val);
-    formstr.dataset.amount = val;
-    if (event.target.id === "pledge") {
-      formstr.dataset.typeaction = "1";
-    } else if (event.target.id === "guarantee") {
-      formstr.dataset.typeaction = "2";
-    }
-    console.log(formstr.dataset.amount);
-    console.log(formstr.dataset.name);
-    console.log(formstr.dataset.description);
-    console.log(formstr.dataset.typeaction);
+  function storeCardData() {
+    document.getElementById('project_name').value = event.currentTarget.dataset.projname;
+    document.getElementById('project_num').value = event.currentTarget.dataset.id;
+    console.log("storeCardData");
+    console.log(document.getElementById('project_name').value);
+    console.log(document.getElementById('project_num').value);
+  }
 
+  function submitData(event) {
+    console.log("submitData1");
+    event.preventDefault();
+    console.log("submitData2");
+    const projnum = document.getElementById('project_num').value;
+    const amount = document.getElementById('inp_amount').value;
+    const typeaction = document.getElementById('type_action').value;
+    //const user_id = document.getElementById('userid').value;
+    console.log(projnum);
+    console.log(amount);
+    console.log(typeaction);
+    const url = `/pledges/new?projnum=${projnum}&amount=${amount}&typeaction=${typeaction}`;
+    fetch(url).then((response) => {
+      return response.text();
+    }).then((data) => {
+      console.log(data);
+    });
+  }
+
+
+  function changeDescription(event) {
+    console.log("changeDescription");
+    let typeaction = "";
+    if (event.target.id === "pledge") {
+      typeaction = "pledge";
+    } else if (event.target.id === "guarantee") {
+      typeaction = "guarantee";
+    }
+    document.getElementById('type_action').value = typeaction;
+    console.log(document.getElementById('type_action').value);
   }
 
 </script>

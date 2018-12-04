@@ -21,6 +21,7 @@ gem 'aws-sdk-s3', require: false
 gem 'activestorage'
 gem 'pundit'
 gem 'stripe'
+gem 'jquery-rails'
 
 group :development do
   gem 'web-console', '>= 3.3.0'
