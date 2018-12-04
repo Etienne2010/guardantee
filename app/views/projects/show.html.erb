@@ -1,7 +1,22 @@
-<%= @project.title %>
-<%= @project.description %>
-<%= image_tag url_for(@project.images[0]) %>
-<%= @project.price %>
-<%= @project.target %>
-<%= @project.guaranteed %>
-<%= @project.status %>
+<div>
+  <%= @project.title %>
+</div>
+<div>
+  <%= @project.description %>
+</div>
+<div>
+  <%= image_tag url_for(@project.images[0]), style: 'width:200px;height:150px;' %>
+</div>
+<div>
+  <%= @project.price %>
+</div>
+<div>
+  <%= @project.target %>
+</div>
+<div>
+  <%= @project.guaranteed %>
+</div>
+<div>
+  <%= @project.status %>
+</div>
+<%= link_to "Back to list", user_projects_path(current_user) %>

@@ -1,2 +1,52 @@
-<h1>Pages#home</h1>
-<p>Find me in app/views/pages/home.html.erb</p>
+<% if user_signed_in? %>
+<%= link_to "New project", new_user_project_path(current_user), class: "button-navbar" %>
+<% end %>
+<div class="container">
+  <div class="row">
+    <% @projects.each do |proj| %>
+      <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-md-3">
+        <div class="card-proj">
+          <div class="card-image">
+            <div>
+              <%= image_tag url_for(proj.images[0]), style: 'width:200px;height:150px;' %>
+            </div>
+          </div>
+          <div class="card-captions">
+            <div>
+              Title
+            </div>
+            <div>
+              Price
+            </div>
+            <div>
+              Target
+            </div>
+            <div>
+              Guaranteed
+            </div>
+            <div>
+              Status
+            </div>
+          </div>
+          <div class="card-data">
+            <div>
+              <%= proj.title %>
+            </div>
+            <div>
+              <%= proj.price %>
+            </div>
+            <div>
+              <%= proj.target %>
+            </div>
+            <div>
+              <%= proj.guaranteed %>
+            </div>
+            <div>
+              <%= proj.status %>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

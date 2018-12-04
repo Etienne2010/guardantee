@@ -19,6 +19,7 @@ gem 'webpacker'
 gem 'awesome_print'
 gem 'aws-sdk-s3', require: false
 gem 'activestorage'
+gem 'pundit'
 
 group :development do
   gem 'web-console', '>= 3.3.0'
