@@ -1,0 +1,28 @@
+.card-proj {
+  background-color: $medium-gray;
+  background-size: cover;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card-image {
+  height: 150px;
+  background-color: $medium-gray;
+  background-size: cover;
+  flex: 0 0 auto;
+}
+
+.card-captions {
+  height: 150px;
+  background-color: $medium-gray;
+  background-size: cover;
+  flex: 0 0 auto;
+}
+
+.card-data {
+  height: 150px;
+  background-color: $medium-gray;
+  background-size: cover;
+  flex: 0 0 auto;
+}

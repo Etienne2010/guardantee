@@ -1,4 +1,8 @@
 <%= form_with model: [@user, @project], local: true do |form| %>
+  <%= form.text_field :title %>
+  <%= form.text_field :description %>
   <%= form.file_field :images, multiple: true %><br>
+  <%= form.number_field :price, :step => ".01" %>
+  <%= form.number_field :target %>
   <%= form.submit %>
 <% end %>
