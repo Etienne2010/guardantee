@@ -26,3 +26,25 @@
   background-size: cover;
   flex: 0 0 auto;
 }
+
+.card-act {
+  height: 150px;
+  background-color: $medium-gray;
+  background-size: cover;
+  flex: 0 0 auto;
+}
+
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: top;
+  margin: 10px;
+}
+
+.mytab {
+  flex: 0 0 100px;
+}
+
+.row {
+  flex: 0 0 auto;
+}

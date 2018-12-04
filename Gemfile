@@ -20,6 +20,7 @@ gem 'awesome_print'
 gem 'aws-sdk-s3', require: false
 gem 'activestorage'
 gem 'pundit'
+gem 'stripe'
 
 group :development do
   gem 'web-console', '>= 3.3.0'

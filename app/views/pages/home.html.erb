@@ -1,8 +1,30 @@
 <div class="container">
+  <div id="left-tab" class="mytab">
+    <h6 id="project_name"></h6>
+    <h6 id="project_num"></h6>
+    <% if user_signed_in? %>
+      <input type="number" name="amount" class="amounts">
+      <ul>
+        <li id="pledge">PLEDGE</li>
+        <li id="guarantee">GUARANTEE</li>
+      </ul>
+      <%= form_tag(:controller => "pledges", :action => "create", :method => "POST") do %>
+        <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+        data-key="<%= Rails.configuration.stripe[:publishable_key] %>"
+        data-name=""
+        data-email="<%= current_user.email %>"
+        data-description=""
+        data-amount="0"
+        data-typeaction="0"
+        data-currency="eur">
+        </script>
+      <% end %>
+    <% end %>
+  </div>
   <div class="row">
     <% @projects.each do |proj| %>
-      <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-md-3">
-        <div class="card-proj">
+      <div class="col-xs-9 col-sm-5 col-md-5 col-md-offset-1">
+        <div class="card-proj" data-id="<%= proj.id %>" data-projname="<%= proj.title %>">
           <div class="card-image">
             <div>
               <%= image_tag url_for(proj.images[0]), style: 'width:200px;height:150px;' %>
@@ -10,19 +32,19 @@
           </div>
           <div class="card-captions">
             <div>
-              Title
+              <i class="fas fa-font"></i>
             </div>
             <div>
-              Price
+              <i class="fas fa-dollar-sign"></i>
             </div>
             <div>
-              Target
+              <i class="fas fa-bullseye"></i>
             </div>
             <div>
-              Guaranteed
+              <i class="fas fa-shield-alt"></i>
             </div>
             <div>
-              Status
+              <i class="fas fa-map-signs"></i>
             </div>
           </div>
           <div class="card-data">
@@ -43,7 +65,56 @@
             </div>
           </div>
         </div>
+        <div class="card-act">
+        </div>
       </div>
     <% end %>
   </div>
 </div>
+
+<script>
+  //document.getElementById('left-tab').style="display:none;";
+
+  document.querySelectorAll('.card-proj').forEach((card) => {
+    card.addEventListener('click', displayStripeForm);
+  });
+
+  function displayStripeForm() {
+    //document.getElementById('left-tab').style="display:block;";
+    const formstrp = document.querySelector('.stripe-button');
+    //document.getElementById('project_name').value = event.target.dataset.projname;
+    //document.getElementById('project_num').value = event.target.dataset.id;
+    console.log("displayStripeForm");
+    console.log(event.currentTarget.dataset.projname);
+    formstrp.dataset.name=event.currentTarget.dataset.projname;
+    console.log(formstrp.dataset.name);
+    formstrp.dataset.description=event.currentTarget.dataset.id;
+  }
+
+  document.querySelectorAll('li').forEach((li) => {
+    if (li.id === 'pledge' || li.id === 'guarantee') {
+      li.addEventListener("click", changeDescription);
+    }
+  });
+
+  function changeDescription(event) {
+    let val = "";
+    document.querySelectorAll('.amounts').forEach((amount) => {
+      val = amount.value;
+    });
+    const formstr = document.querySelector('.stripe-button');
+    console.log(val);
+    formstr.dataset.amount = val;
+    if (event.target.id === "pledge") {
+      formstr.dataset.typeaction = "1";
+    } else if (event.target.id === "guarantee") {
+      formstr.dataset.typeaction = "2";
+    }
+    console.log(formstr.dataset.amount);
+    console.log(formstr.dataset.name);
+    console.log(formstr.dataset.description);
+    console.log(formstr.dataset.typeaction);
+
+  }
+
+</script>
