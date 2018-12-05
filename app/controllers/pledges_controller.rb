@@ -1,4 +1,9 @@
 class PledgesController < ApplicationController
+
+  def index
+    @pledges = Pledge.where(user_id: current_user.id).sort_by { |pl| pl.typeaction }
+  end
+
   def new
     projnum = params[:projnum]
     amount_c = (params[:amount].to_f * 100.to_f).to_i
@@ -16,6 +21,19 @@ class PledgesController < ApplicationController
     else
       ap "Bug pledge"
     end
+  end
+
+  def destroy
+    puts "destroy"
+    @pledge = Pledge.find(params[:id])
+    chargeid = @pledge.chargeid
+    refund = Stripe::Refund.create({
+      charge: chargeid
+    })
+    ap refund
+    @pledge.status = "refunded" if refund["status"] != "failed"
+    @pledge.save
+    ap @pledge.status
   end
 
   def create
@@ -37,6 +55,7 @@ class PledgesController < ApplicationController
       currency:     "eur"
     )
 
+    @pledge.chargeid = charge["id"]
     @pledge.status = "paid"
     @pledge.save
 

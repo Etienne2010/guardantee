@@ -3,6 +3,7 @@ class PagesController < ApplicationController
 
   def home
     @projects = Project.all
+    @computed_data = Compute.new(@projects).computer
     if user_signed_in?
       @pledge = Pledge.where("user_id=? AND status=?", current_user.id, "pending").first
       if !@pledge.nil?

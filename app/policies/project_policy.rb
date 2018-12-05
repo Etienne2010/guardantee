@@ -1,6 +1,10 @@
 class ProjectPolicy < ApplicationPolicy
 
-  def create
+  def show?
+    record.user == current_user
+  end
+
+  def create?
     true
   end
 

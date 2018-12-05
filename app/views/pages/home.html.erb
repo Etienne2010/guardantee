@@ -34,6 +34,7 @@
   </div>
   <div class="row">
     <% @projects.each do |proj| %>
+    <% proj_data = @computed_data.select { |dataset| dataset[:project][:id] == proj.id } %>
       <div class="col-xs-9 col-sm-5 col-md-5 col-md-offset-1">
         <div class="card-proj" data-id="<%= proj.id %>" data-projname="<%= proj.title %>">
           <div class="card-image">
@@ -69,7 +70,7 @@
               <%= proj.target %>
             </div>
             <div>
-              <%= proj.guaranteed %>
+              <%= proj_data[0][:guaranteed] %>
             </div>
             <div>
               <%= proj.status %>
