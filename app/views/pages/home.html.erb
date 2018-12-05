@@ -1,8 +1,41 @@
 <div class="container">
+  <div id="left-tab" class="mytab">
+    <h1 id="project_name"></h1>
+    <h1 id="project_num"></h1>
+    <h1 id="type_action"></h1>
+    <div class="form-container" id="formstripe">
+    </div>
+    <% if user_signed_in? %>
+      <div>
+        <button type='submit' id='topay' value='Pledge/Guarantee'>
+      </div>
+      <div>
+        <input type="number" name="amount" id="inp_amount">
+        <ul>
+          <li id="pledge">PLEDGE</li>
+          <li id="guarantee">GUARANTEE</li>
+        </ul>
+      </div>
+      <div>
+        <% if !@pledge.nil? %>
+          <form action='/pledges' method='post'>
+            <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+            <script src='https://checkout.stripe.com/checkout.js' class='stripe-button'
+            data-key='<%= Rails.configuration.stripe[:publishable_key] %>'
+            data-name='My project'
+            data-email='<%= current_user.email %>'
+            data-description='<%= @pr.title %>'
+            data-amount='<%= @pledge.amount_cents %>'
+            data-currency='eur'></script>
+          </form>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
   <div class="row">
     <% @projects.each do |proj| %>
-      <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-md-3">
-        <div class="card-proj">
+      <div class="col-xs-9 col-sm-5 col-md-5 col-md-offset-1">
+        <div class="card-proj" data-id="<%= proj.id %>" data-projname="<%= proj.title %>">
           <div class="card-image">
             <div>
               <%= image_tag url_for(proj.images[0]), style: 'width:200px;height:150px;' %>
@@ -10,19 +43,19 @@
           </div>
           <div class="card-captions">
             <div>
-              Title
+              <i class="fas fa-font"></i>
             </div>
             <div>
-              Price
+              <i class="fas fa-dollar-sign"></i>
             </div>
             <div>
-              Target
+              <i class="fas fa-bullseye"></i>
             </div>
             <div>
-              Guaranteed
+              <i class="fas fa-shield-alt"></i>
             </div>
             <div>
-              Status
+              <i class="fas fa-map-signs"></i>
             </div>
           </div>
           <div class="card-data">
@@ -43,7 +76,67 @@
             </div>
           </div>
         </div>
+        <div class="card-act">
+        </div>
       </div>
     <% end %>
   </div>
 </div>
+
+<script>
+  //document.getElementById('left-tab').style="display:none;";
+
+  document.getElementById('topay').addEventListener('click', submitData);
+
+  document.querySelectorAll('.card-proj').forEach((card) => {
+    card.addEventListener('click', storeCardData);
+  });
+
+  document.querySelectorAll('li').forEach((li) => {
+    if (li.id === 'pledge' || li.id === 'guarantee') {
+      li.addEventListener("click", changeDescription);
+    }
+  });
+
+  function storeCardData() {
+    document.getElementById('project_name').value = event.currentTarget.dataset.projname;
+    document.getElementById('project_num').value = event.currentTarget.dataset.id;
+    console.log("storeCardData");
+    console.log(document.getElementById('project_name').value);
+    console.log(document.getElementById('project_num').value);
+  }
+
+  function submitData(event) {
+    console.log("submitData1");
+    event.preventDefault();
+    console.log("submitData2");
+    const projnum = document.getElementById('project_num').value;
+    const amount = document.getElementById('inp_amount').value;
+    const typeaction = document.getElementById('type_action').value;
+    //const user_id = document.getElementById('userid').value;
+    console.log(projnum);
+    console.log(amount);
+    console.log(typeaction);
+    const url = `/pledges/new?projnum=${projnum}&amount=${amount}&typeaction=${typeaction}`;
+    fetch(url).then((response) => {
+      return response.text();
+    }).then((data) => {
+      location.reload(true);
+      document.getElementById('topay').style="display:none;";
+    });
+  }
+
+
+  function changeDescription(event) {
+    console.log("changeDescription");
+    let typeaction = "";
+    if (event.target.id === "pledge") {
+      typeaction = "pledge";
+    } else if (event.target.id === "guarantee") {
+      typeaction = "guarantee";
+    }
+    document.getElementById('type_action').value = typeaction;
+    console.log(document.getElementById('type_action').value);
+  }
+
+</script>
