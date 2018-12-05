@@ -6,10 +6,20 @@ class ProjectsController < ApplicationController
 
   def index
     @projects = policy_scope(Project).where(user_id: current_user.id)
+    @computed_data = Compute.new(@projects).computer
   end
 
   def show
     @project = Project.find(params[:id])
+    @computed_data = Compute.new([@project]).computer
+    @pledges = Pledge.where("project=?", @project.id).sort_by { |pl| pl.typeaction }
+    @array_pledges = []
+    @pledges.each do |pl|
+      mhash = {}
+      mhash[:pledge] = pl
+      mhash[:email] = User.find(pl.user_id)[:email]
+      @array_pledges << mhash
+    end
   end
 
   def new

@@ -1,0 +1,18 @@
+.two-cols, .four-cols {
+  display: flex;
+  justify-content: space-around;
+  align-items: top;
+}
+
+.col-right {
+  flex: 1 0 auto;
+}
+
+.col-left {
+  flex: 0 1 auto;
+}
+
+.column {
+  flex: 0 1 auto;
+}
+

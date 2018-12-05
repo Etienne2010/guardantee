@@ -1,22 +1,75 @@
-<div>
-  <%= @project.title %>
-</div>
-<div>
-  <%= @project.description %>
-</div>
-<div>
-  <%= image_tag url_for(@project.images[0]), style: 'width:200px;height:150px;' %>
-</div>
-<div>
-  <%= @project.price %>
-</div>
-<div>
-  <%= @project.target %>
-</div>
-<div>
-  <%= @project.guaranteed %>
-</div>
-<div>
-  <%= @project.status %>
+<div class="two-cols">
+  <div class="col-left">
+    <div>
+      Title
+    </div>
+    <div>
+      Description
+    </div>
+    <div style="height:150px;">
+      Image
+    </div>
+    <div>
+      Price per unit
+    </div>
+    <div>
+      Target
+    </div>
+    <div>
+      Pledged
+    </div>
+    <div>
+      Guaranteed
+    </div>
+    <div>
+      Status
+    </div>
+  </div>
+  <div class="col-right">
+    <div>
+      <%= @project.title %>
+    </div>
+    <div>
+      <%= @project.description %>
+    </div>
+    <div>
+      <%= image_tag url_for(@project.images[0]), style: 'width:200px;height:150px;' %>
+    </div>
+    <div>
+      <%= @project.price %>
+    </div>
+    <div>
+      <%= @project.target %>
+    </div>
+    <div>
+      <%= @computed_data[0][:pledged] %>
+    </div>
+    <div>
+      <%= @computed_data[0][:guaranteed] %>
+    </div>
+    <div>
+      <%= @project.status %>
+    </div>
+  </div>
 </div>
 <%= link_to "Back to list", user_projects_path(current_user) %>
+
+<h2>Pledges/Guarantees</h2>
+
+<% @array_pledges.each do |pl| %>
+  <div class="four-cols">
+    <div class="column">
+      <%= pl[:pledge].amount_cents.to_f / 100.0 %>
+    </div>
+    <div class="column">
+      <%= pl[:pledge].typeaction %>
+    </div>
+    <div class="column">
+      <%= pl[:pledge].status %>
+    </div>
+    <div class="column">
+      <%= pl[:email] %>
+    </div>
+  </div>
+<% end %>
+
