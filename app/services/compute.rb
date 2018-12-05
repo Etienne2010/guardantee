@@ -14,14 +14,14 @@ class Compute
       pledged = 0
       st_pledged = connection.exec_prepared('totaling', [ proj.id, "paid", "pledge" ])
       st_pledged.each do |tup|
-        pledged = tup["somme"]
+        pledged = tup["somme"].to_f / 100.0
       end
       mhash[:pledged] = pledged
 
       guaranteed = 0
       st_guaranteed = connection.exec_prepared('totaling', [ proj.id, "paid", "guarantee" ])
       st_guaranteed.each do |tup|
-        guaranteed = tup["somme"]
+        guaranteed = tup["somme"].to_f / 100.0
       end
       mhash[:guaranteed] = guaranteed
       # res_pledged = ActiveRecord::Base.connection.execute("SELECT SUM(pledges.amount_cents), pledges.project FROM pledges WHERE pledges.project=? AND pledges.status=? AND pledges.typeaction=? GROUP BY pledges.project", proj.id, "paid", "pledge")

@@ -11,24 +11,20 @@
   background-color: $medium-gray;
   background-size: cover;
   flex: 0 0 auto;
+  margin: 5px;
 }
 
 .card-captions {
-  height: 150px;
+  padding: 10px;
+  height: 160px;
   background-color: $medium-gray;
   background-size: cover;
   flex: 0 0 auto;
 }
 
 .card-data {
-  height: 150px;
-  background-color: $medium-gray;
-  background-size: cover;
-  flex: 0 0 auto;
-}
-
-.card-act {
-  height: 150px;
+  padding: 10px;
+  height: 160px;
   background-color: $medium-gray;
   background-size: cover;
   flex: 0 0 auto;
