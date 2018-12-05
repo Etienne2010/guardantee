@@ -6,12 +6,30 @@
     <div class="form-container" id="formstripe">
     </div>
     <% if user_signed_in? %>
-      <input type="number" name="amount" id="inp_amount">
-      <ul>
-        <li id="pledge">PLEDGE</li>
-        <li id="guarantee">GUARANTEE</li>
-      </ul>
-      <button type='submit' id='topay' value='Pledge/Guarantee'>
+      <div>
+        <button type='submit' id='topay' value='Pledge/Guarantee'>
+      </div>
+      <div>
+        <input type="number" name="amount" id="inp_amount">
+        <ul>
+          <li id="pledge">PLEDGE</li>
+          <li id="guarantee">GUARANTEE</li>
+        </ul>
+      </div>
+      <div>
+        <% if !@pledge.nil? %>
+          <form action='/pledges' method='post'>
+            <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+            <script src='https://checkout.stripe.com/checkout.js' class='stripe-button'
+            data-key='<%= Rails.configuration.stripe[:publishable_key] %>'
+            data-name='My project'
+            data-email='<%= current_user.email %>'
+            data-description='<%= @pr.title %>'
+            data-amount='<%= @pledge.amount_cents %>'
+            data-currency='eur'></script>
+          </form>
+        <% end %>
+      </div>
     <% end %>
   </div>
   <div class="row">
@@ -103,7 +121,8 @@
     fetch(url).then((response) => {
       return response.text();
     }).then((data) => {
-      console.log(data);
+      location.reload(true);
+      document.getElementById('topay').style="display:none;";
     });
   }
 
