@@ -56,20 +56,13 @@
 
 <h2>Pledges/Guarantees</h2>
 
-<% @array_pledges.each do |pl| %>
-  <div class="four-cols">
-    <div class="column">
-      <%= pl[:pledge].amount_cents.to_f / 100.0 %>
-    </div>
-    <div class="column">
-      <%= pl[:pledge].typeaction %>
-    </div>
-    <div class="column">
-      <%= pl[:pledge].status %>
-    </div>
-    <div class="column">
-      <%= pl[:email] %>
-    </div>
-  </div>
-<% end %>
-
+<table>
+  <% @array_pledges.each do |pl| %>
+    <tr>
+      <td><%= pl[:pledge].amount_cents.to_f / 100.0 %></td>
+      <td><%= pl[:pledge].typeaction %></td>
+      <td><%= pl[:pledge].status %></td>
+      <td><%= pl[:email] %></td>
+    </tr>
+  <% end %>
+</table>

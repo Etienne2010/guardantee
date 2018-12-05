@@ -1,22 +1,14 @@
+<table>
 <% @pledges.each do |pl| %>
-  <div class="four-cols">
-    <div class="column">
-      <%= pl.amount_cents.to_f / 100.0 %>
-    </div>
-    <div class="column">
-      <%= pl.typeaction %>
-    </div>
-    <div class="column">
-      <%= pl.status %>
-    </div>
+  <tr>
+    <td><%= pl.amount_cents.to_f / 100.0 %></td>
+    <td><%= pl.typeaction %></td>
+    <td><%= pl.status %></td>
     <% if pl.status == "paid" && pl.typeaction == "pledge" %>
-      <div class="column">
-        <%= link_to "Get refund", pledge_path(pl), method: :delete %>
-      </div>
+      <td><%= link_to "Get refund", pledge_path(pl), method: :delete %></td>
     <%else %>
-      <div class="column">
-        Not applicable
-      </div>
+      <td>Not applicable</td>
     <% end %>
-  </div>
+  </tr>
 <% end %>
+</table>

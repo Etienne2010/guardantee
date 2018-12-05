@@ -1,18 +1,22 @@
 .two-cols, .four-cols {
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   align-items: top;
 }
 
 .col-right {
+  padding: 30px;
   flex: 1 0 auto;
+  align-content: flex-end;
 }
 
 .col-left {
+  padding: 30px;
   flex: 0 1 auto;
 }
 
 .column {
   flex: 0 1 auto;
+  align-content: flex-end;
 }
 
