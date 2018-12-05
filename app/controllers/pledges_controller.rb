@@ -22,9 +22,41 @@ class PledgesController < ApplicationController
     puts "In the create of pledges"
     ap params[:stripeToken]
     ap params[:stripeEmail]
+    @pledge = Pledge.where("user_id=? AND status=?", current_user.id, "pending").first
+    customer = Stripe::Customer.create(
+      source: params[:stripeToken],
+      email:  params[:stripeEmail]
+    )
+
+    description = get_description(@pledge)
+
+    charge = Stripe::Charge.create(
+      customer:     customer.id,   # You should store this customer id and re-use it.
+      amount:       @pledge.amount_cents,
+      description:  description,
+      currency:     "eur"
+    )
+
+    @pledge.status = "paid"
+    @pledge.save
+
+    begin
+    rescue Stripe::CardError => e
+      flash[:alert] = e.message
+      redirect_to root_path
+    end
+
   end
 
   private
+
+  def get_description(pledge)
+    descr = pledge.typeaction.capitalize + " for "
+    project_id = pledge.project
+    project = Project.find(project_id)
+    descr += project.title
+    descr
+  end
 
   def empty_pledges
     puts "empty_pledges"
