@@ -98,7 +98,7 @@
     }
   });
 
-  function storeCardData() {
+  function storeCardData(event) {
     document.getElementById('project_name').value = event.currentTarget.dataset.projname;
     document.getElementById('project_num').value = event.currentTarget.dataset.id;
     document.getElementById('project_name').innerHTML = event.currentTarget.dataset.projname;
