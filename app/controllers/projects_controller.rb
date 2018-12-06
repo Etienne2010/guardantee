@@ -1,4 +1,5 @@
 class ProjectsController < ApplicationController
+
   before_action :authenticate_user!, only: [:new, :create, :edit, :update, :destroy]
   include Pundit
   after_action :verify_authorized, except: [:index, :show, :new, :create], unless: :skip_pundit?

@@ -1,3 +1,6 @@
+<div class="banner-g">
+  <%= image_tag "nature.jpg", style: 'height:auto;width:100%;' %>
+</div>
 <div class="container">
   <div id="left-tab" class="mytab">
     <h1 id="project_name"></h1>
@@ -7,14 +10,14 @@
     </div>
     <% if user_signed_in? %>
       <div>
-        <button type='submit' id='topay'>Pledge/Guarantee</button>
+        <button type='submit' id='topay'>Validate</button>
       </div>
       <div>
-        <input type="number" name="amount" id="inp_amount">
-        <ul>
-          <li id="pledge">PLEDGE</li>
-          <li id="guarantee">GUARANTEE</li>
-        </ul>
+        <input type="number" name="amount" id="inp_amount" placeholder="Amount">
+        <div class="divul">
+          <div class="li" id="pledge">PLEDGE</div>
+          <div class="li" id="guarantee">GUARANTEE</div>
+        </div>
       </div>
       <div>
         <% if !@pledge.nil? %>
@@ -35,14 +38,26 @@
   <div class="row">
     <% @projects.each do |proj| %>
     <% proj_data = @computed_data.select { |dataset| dataset[:project][:id] == proj.id } %>
+    <% bg_color = "#CCCCCC" %>
+    <% if !proj.target.nil? && !proj_data[0][:pledged].nil? && !proj_data[0][:guaranteed].nil? %>
+      <% if proj.target <= proj_data[0][:pledged] && proj.target <= proj_data[0][:guaranteed] %>
+        <% bg_color = "#32B796" %>
+      <% elsif proj.target <= proj_data[0][:pledged] %>
+        <% bg_color = "#469AE0" %>
+      <% elsif proj.target <= proj_data[0][:guaranteed] %>
+        <% bg_color = "#FDB631" %>
+      <% else %>
+        <% bg_color = "#E67E22" %>
+      <% end %>
+    <% end %>
       <div class="col-xs-9 col-sm-5 col-md-5 col-md-offset-1">
-        <div class="card-proj" data-id="<%= proj.id %>" data-projname="<%= proj.title %>">
+        <div class="card-proj" data-id="<%= proj.id %>" data-projname="<%= proj.title %>" style="background-color: <%= bg_color %>">
           <div class="card-image">
             <div>
               <%= image_tag url_for(proj.images[0]), style: 'width:200px;height:150px;' %>
             </div>
           </div>
-          <div class="card-captions">
+          <div class="card-captions" style="background-color: <%= bg_color %>">
             <div>
               <i class="fas fa-font"></i>
             </div>
@@ -59,7 +74,7 @@
               <i class="fas fa-map-signs"></i>
             </div>
           </div>
-          <div class="card-data">
+          <div class="card-data" style="background-color: <%= bg_color %>">
             <div>
               <%= proj.title %>
             </div>
@@ -86,12 +101,15 @@
   //document.getElementById('left-tab').style="display:none;";
 
   document.getElementById('topay').addEventListener('click', submitData);
+  document.getElementById('topay').style.visibility = "hidden";
+
+  document.getElementById('inp_amount').addEventListener('keyup', showButtonOrNot);
 
   document.querySelectorAll('.card-proj').forEach((card) => {
     card.addEventListener('click', storeCardData);
   });
 
-  document.querySelectorAll('li').forEach((li) => {
+  document.querySelectorAll('.li').forEach((li) => {
     if (li.id === 'pledge' || li.id === 'guarantee') {
       li.addEventListener("click", changeDescription);
     }
@@ -133,11 +151,47 @@
     let typeaction = "";
     if (event.target.id === "pledge") {
       typeaction = "pledge";
+      nullifyLiBorders();
+      event.target.style.background = "#E67E22";
+      event.target.style.fontWeight = "bold";
     } else if (event.target.id === "guarantee") {
       typeaction = "guarantee";
+      nullifyLiBorders();
+      event.target.style.background = "#E67E22";
+      event.target.style.fontWeight = "bold";
     }
     document.getElementById('type_action').value = typeaction;
+    showButtonOrNot();
     console.log(document.getElementById('type_action').value);
+  }
+
+  function showButtonOrNot() {
+    const projname = document.getElementById('project_name').value;
+    const amount = document.getElementById('inp_amount').value;
+    const typeaction = document.getElementById('type_action').value;
+    if (projname !== "" && amount !== "" && typeaction !== "" && typeaction !== undefined){
+      console.log("typeaction = " + typeaction);
+      showButton();
+    }
+    else {
+      hideButton();
+    }
+  }
+
+  function showButton() {
+    document.getElementById('topay').style.visibility = "visible";
+  }
+
+  function hideButton() {
+    document.getElementById('topay').style.visibility = "hidden";
+  }
+
+
+  function nullifyLiBorders() {
+    document.querySelectorAll('.li').forEach((li) => {
+      li.style.background = "#EE5F5B";
+      li.style.fontWeight = "normal";
+    });
   }
 
 </script>

@@ -1,8 +1,23 @@
-<%= form_with model: [@user, @project], local: true do |form| %>
-  <%= form.text_field :title %>
-  <%= form.text_field :description %>
-  <%= form.file_field :images, multiple: true %><br>
-  <%= form.number_field :price, :step => ".01" %>
-  <%= form.number_field :target %>
-  <%= form.submit %>
-<% end %>
+<%= image_tag "nature.jpg", style: 'height:auto;width:100%;' %>
+<div class="deviseform">
+  <%= form_with model: [@user, @project], local: true do |form| %>
+    <div>
+      <%= form.text_field :title %>
+    </div>
+    <div>
+      <%= form.text_field :description %>
+    </div>
+    <div>
+      <%= form.file_field :images, multiple: true %><br>
+    </div>
+    <div>
+      <%= form.number_field :price, :step => ".01" %>
+    </div>
+    <div>
+      <%= form.number_field :target %>
+    </div>
+    <div>
+      <%= form.submit %>
+    </div>
+  <% end %>
+</div>
