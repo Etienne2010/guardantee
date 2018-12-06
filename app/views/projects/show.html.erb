@@ -63,6 +63,9 @@
       <td><%= pl[:pledge].typeaction %></td>
       <td><%= pl[:pledge].status %></td>
       <td><%= pl[:email] %></td>
+      <td><% if !@project.target.nil? && pl[:pledge].typeaction == "refunded" && @computed_data[0][:guaranteed] > @project.target %>
+        <%= link_to "Refund taken from investors" %>
+      </td>
     </tr>
   <% end %>
 </table>
