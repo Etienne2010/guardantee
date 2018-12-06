@@ -30,7 +30,6 @@
           <div class="indi-user" id="buyer">Buyer</div>
           <div class="indi-user" id="guarantor">Guarantor</div>
           <div class="indi-user" id="seller">Seller</div>
-          <div class="indi-content"></div>
         </div>
       </div>
       <div>
@@ -150,6 +149,25 @@
 </div>
 
 
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalCenterTitle" style="color: black;">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="dismissModal()" style="color: black;">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" style="color: black;">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="dismissModal()" style="color: black;">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
   //document.getElementById('left-tab').style="display:none;";
 
@@ -157,64 +175,72 @@
     user.addEventListener('click', showIndication);
   });
 
+  function dismissModal() {
+    console.log("dismissModal");
+    document.querySelector("#exampleModalCenter").className = "modal fade";
+  }
+
   function showIndication() {
+    let indication = "vide";
     if (event.target.id === "seller") {
       console.log("seller");
       const validat = document.getElementById('topay');
-      if (validat !== undefined) {
-        if (validat.style.display !== "none") {
-          const indication = "Click login at the top right";
-        } else {
-          const indication = "Click New Project at the top right if you have not yet created a project, click on the lighthouse icon at the top right otherwise";
-        }
+      const valid_value = validat.value;
+      console.log("valid_value = " + valid_value);
+      if (valid_value !== undefined) {
+        indication = "Click New Project at the top right if you have not yet created a project, click on the lighthouse icon at the top right otherwise";
       } else {
-        const indication = "Click login at the top right";
+        indication = "Click login at the top right";
       }
     } else if (event.target.id === "buyer") {
       console.log("buyer");
-      const proj_name = document.getElementById('proj_name').value;
-      if (proj_name === "") {
-        const indication = "Click on the image of the project whose product you want to prepurchase";
+      const proj_name = document.getElementById('project_name').value;
+      console.log("project name = "+ proj_name);
+      if (proj_name === "" || proj_name === undefined) {
+        indication = "Click on the image of the project whose product you want to prepurchase";
       }
       else {
         const inp_amount = document.getElementById('inp_amount').value;
         if (inp_amount === "") {
-          const indication = "Set the amount of your pledge/prepurchase in the input field Amount above";
+          indication = "Set the amount of your pledge/prepurchase in the input field Amount above";
         } else {
           const typeaction = document.getElementById('type_action').value;
           if (typeaction !== "pledge") {
-            const indication = "Click on the PLEDGE toggle button above";
+            indication = "Click on the PLEDGE toggle button above";
           } else {
-            const indication = "Click on validate, then on pay with card";
+            indication = "Click on validate, then on pay with card";
           }
         }
       }
     } else if (event.target.id === "guarantor") {
       console.log("guarantor");
-      const proj_name = document.getElementById('proj_name').value;
-      if (proj_name === "") {
-        const indication = "Click on the image of the project whose product you want to guarantee";
+      const proj_name = document.getElementById('project_name').value;
+      if (proj_name === "" || proj_name === undefined) {
+        indication = "Click on the image of the project whose product you want to guarantee";
       }
       else {
         const inp_amount = document.getElementById('inp_amount').value;
         if (inp_amount === "") {
-          const indication = "Set the amount of your guarantee in the input field Amount above";
+          indication = "Set the amount of your guarantee in the input field Amount above";
         } else {
           const typeaction = document.getElementById('type_action').value;
           if (typeaction !== "guarantee") {
-            const indication = "Click on the GUARANTEE toggle button above";
+            indication = "Click on the GUARANTEE toggle button above";
           } else {
-            const indication = "Click on validate, then on pay with card";
+            indication = "Click on validate, then on pay with card";
           }
         }
       }
     }
 
-    const indi_content = document.getElementById('indi-content');
-    indi_content.innerHTML = indication;
+    document.getElementById('exampleModalCenterTitle').innerHTML = "Next action";
+    document.querySelector('.modal-body').innerHTML = indication;
+    document.querySelector("#exampleModalCenter").className = "modal show";
+
+    // const indi_content = document.getElementById('content-ind');
+    // indi_content.innerHTML = indication;
     console.log(indication);
   }
-
 
   document.getElementById('topay').addEventListener('click', submitData);
   document.getElementById('topay').style.visibility = "hidden";
