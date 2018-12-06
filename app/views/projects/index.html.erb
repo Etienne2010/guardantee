@@ -48,7 +48,7 @@
               <%= proj_data[0][:guaranteed] %>
             </div>
             <div>
-              <%= proj.status %>
+              <%= proj.status.upcase if !proj.status.nil? %>
             </div>
           </div>
         </div>

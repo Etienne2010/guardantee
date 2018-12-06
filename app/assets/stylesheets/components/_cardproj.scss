@@ -1,4 +1,5 @@
 .card-proj {
+  margin-top: 20px;
   background-color: $medium-gray;
   background-size: cover;
   display: flex;
@@ -21,6 +22,7 @@
   height: 160px;
   background-color: $medium-gray;
   background-size: cover;
+  color: black;
   flex: 0 0 auto;
 }
 
@@ -29,6 +31,7 @@
   height: 160px;
   background-color: $medium-gray;
   background-size: cover;
+  color: black;
   flex: 0 0 auto;
 }
 
@@ -41,6 +44,10 @@
 
 .mytab {
   flex: 0 1 100px;
+  margin-left: 0;
+  margin-top: 0;
+  padding-left: 0;
+  padding-top: 0;
   background: black;
   opacity: 0.87;
   color: white;
@@ -51,4 +58,11 @@
 
 .row {
   flex: 1 0 auto;
+}
+
+.container {
+  margin-bottom: 0;
+  margin-left: 0;
+  padding-left: 0;
+  padding-bottom: 0;
 }
