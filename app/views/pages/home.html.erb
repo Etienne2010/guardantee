@@ -1,13 +1,19 @@
 <div class="banner-g">
   <%= image_tag "nature.jpg", style: 'height:auto;width:100%;' %>
+  <div class="tagline">
+    <div class="firstline">
+      Serene Prepurchases
+    </div>
+    <div class="secondline">
+      Do Not Lose Your Money Anymore
+    </div>
+  </div>
 </div>
 <div class="container">
   <div id="left-tab" class="mytab">
     <h1 id="project_name"></h1>
     <h1 id="project_num"></h1>
     <h1 id="type_action"></h1>
-    <div class="form-container" id="formstripe">
-    </div>
     <% if user_signed_in? %>
       <div>
         <button type='submit' id='topay'>Validate</button>
@@ -17,6 +23,14 @@
         <div class="divul">
           <div class="li" id="pledge">PLEDGE</div>
           <div class="li" id="guarantee">GUARANTEE</div>
+        </div>
+      </div>
+      <div>
+        <div class="indications">
+          <div class="indi-user" id="buyer">Buyer</div>
+          <div class="indi-user" id="guarantor">Guarantor</div>
+          <div class="indi-user" id="seller">Seller</div>
+          <div class="indi-content"></div>
         </div>
       </div>
       <div>
@@ -88,17 +102,119 @@
               <%= proj_data[0][:guaranteed] %>
             </div>
             <div>
-              <%= proj.status %>
+              <%= proj.status.upcase if !proj.status.nil? %>
             </div>
           </div>
         </div>
       </div>
     <% end %>
+    <div class="col-xs-12 explanation">
+      <div class="flexexplanation">
+        <div class="paragraph">
+          <div class="title-par">
+            The purpose
+          </div>
+          <div class="text-par">
+            Too many times, the proceeds of presales are lost because the team in charge of the project cannot deliver given their budget and overall, their abilities. So as to prevent this kind of issue from arising again, Guardantee proposes presales protected by money back guarantees.
+          </div>
+        </div>
+        <div class="paragraph">
+          <div class="title-par">
+            Buyers' side
+          </div>
+          <div class="text-par">
+            You prepurchase the products corresponding to the projects shown on this page. If the amount of prepurchases exceeds at the same time the amount of guarantees and the target, your money will be used to develop the product. If in the end you are dissatisfied with the resulting product, you will get a refund amounting to 96% of your prepurchase (Stripe takes 2.7%), and this refund will come from money of guarantors. You can additionally get a 96% refund at anytime before the project reaches its target. If you pledge more than the price indicated, it's up to the seller to determine what bonus you can get.
+          </div>
+        </div>
+        <div class="paragraph">
+          <div class="title-par">
+            Sellers' side
+          </div>
+          <div class="text-par">
+            Your goal is to inspire trust to guarantors, instead of inspiring trust to buyers. It is your job to give a bonus high enough to guarantors in case of success, so that your production can get guaranteed and launched. Do not forget to specify the bonus in the description of your project. You will not receive anything before the amount of guarantees and pledges both reach your target. Propose a bonus to buyers who would be ready to pledge more than your price.
+          </div>
+        </div>
+        <div class="paragraph">
+          <div class="title-par">
+            Guarantors' side
+          </div>
+          <div class="text-par">
+            Look for the bonus proposed by sellers in the description of their project. Then, pick an amount for the projects you want to guarantee.
+          </div>
+        </div>
+
+      </div>
+    </div>
+
   </div>
 </div>
 
+
 <script>
   //document.getElementById('left-tab').style="display:none;";
+
+  document.querySelectorAll('.indi-user').forEach((user) => {
+    user.addEventListener('click', showIndication);
+  });
+
+  function showIndication() {
+    if (event.target.id === "seller") {
+      console.log("seller");
+      const validat = document.getElementById('topay');
+      if (validat !== undefined) {
+        if (validat.style.display !== "none") {
+          const indication = "Click login at the top right";
+        } else {
+          const indication = "Click New Project at the top right if you have not yet created a project, click on the lighthouse icon at the top right otherwise";
+        }
+      } else {
+        const indication = "Click login at the top right";
+      }
+    } else if (event.target.id === "buyer") {
+      console.log("buyer");
+      const proj_name = document.getElementById('proj_name').value;
+      if (proj_name === "") {
+        const indication = "Click on the image of the project whose product you want to prepurchase";
+      }
+      else {
+        const inp_amount = document.getElementById('inp_amount').value;
+        if (inp_amount === "") {
+          const indication = "Set the amount of your pledge/prepurchase in the input field Amount above";
+        } else {
+          const typeaction = document.getElementById('type_action').value;
+          if (typeaction !== "pledge") {
+            const indication = "Click on the PLEDGE toggle button above";
+          } else {
+            const indication = "Click on validate, then on pay with card";
+          }
+        }
+      }
+    } else if (event.target.id === "guarantor") {
+      console.log("guarantor");
+      const proj_name = document.getElementById('proj_name').value;
+      if (proj_name === "") {
+        const indication = "Click on the image of the project whose product you want to guarantee";
+      }
+      else {
+        const inp_amount = document.getElementById('inp_amount').value;
+        if (inp_amount === "") {
+          const indication = "Set the amount of your guarantee in the input field Amount above";
+        } else {
+          const typeaction = document.getElementById('type_action').value;
+          if (typeaction !== "guarantee") {
+            const indication = "Click on the GUARANTEE toggle button above";
+          } else {
+            const indication = "Click on validate, then on pay with card";
+          }
+        }
+      }
+    }
+
+    const indi_content = document.getElementById('indi-content');
+    indi_content.innerHTML = indication;
+    console.log(indication);
+  }
+
 
   document.getElementById('topay').addEventListener('click', submitData);
   document.getElementById('topay').style.visibility = "hidden";

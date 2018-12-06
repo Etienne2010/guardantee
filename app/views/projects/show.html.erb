@@ -1,68 +1,81 @@
-<div class="two-cols">
-  <div class="col-left">
-    <div>
-      Title
+<div class="container-g"></div>
+  <div class="two-cols">
+    <div class="col-left">
+      <div>
+        Title
+      </div>
+      <div style="height:200px;">
+        Description
+      </div>
+      <div style="height:150px;">
+        Image
+      </div>
+      <div>
+        Price per unit
+      </div>
+      <div>
+        Target
+      </div>
+      <div>
+        Pledged
+      </div>
+      <div>
+        Guaranteed
+      </div>
+      <div>
+        Status
+      </div>
     </div>
-    <div>
-      Description
-    </div>
-    <div style="height:150px;">
-      Image
-    </div>
-    <div>
-      Price per unit
-    </div>
-    <div>
-      Target
-    </div>
-    <div>
-      Pledged
-    </div>
-    <div>
-      Guaranteed
-    </div>
-    <div>
-      Status
+    <div class="col-right">
+      <div>
+        <%= @project.title %>
+      </div>
+      <div style="height:200px;">
+        <%= @project.description %>
+      </div>
+      <div>
+        <%= image_tag url_for(@project.images[0]), style: 'width:200px;height:150px;' %>
+      </div>
+      <div>
+        <%= @project.price %>
+      </div>
+      <div>
+        <%= @project.target %>
+      </div>
+      <div>
+        <%= @computed_data[0][:pledged] %>
+      </div>
+      <div>
+        <%= @computed_data[0][:guaranteed] %>
+      </div>
+      <div>
+        <%= @project.status.upcase if !@project.status.nil? %>
+      </div>
     </div>
   </div>
-  <div class="col-right">
-    <div>
-      <%= @project.title %>
-    </div>
-    <div>
-      <%= @project.description %>
-    </div>
-    <div>
-      <%= image_tag url_for(@project.images[0]), style: 'width:200px;height:150px;' %>
-    </div>
-    <div>
-      <%= @project.price %>
-    </div>
-    <div>
-      <%= @project.target %>
-    </div>
-    <div>
-      <%= @computed_data[0][:pledged] %>
-    </div>
-    <div>
-      <%= @computed_data[0][:guaranteed] %>
-    </div>
-    <div>
-      <%= @project.status %>
-    </div>
+  <%= link_to "Back to list", user_projects_path(current_user) %>
+
+  <div class="two-cols">
+    <h2>Pledges/Guarantees</h2>
+  </div>
+
+  <div class="two-cols">
+    <table>
+      <% @array_pledges.each do |pl| %>
+        <tr>
+          <td><%= pl[:pledge].amount_cents.to_f / 100.0 %></td>
+          <td><%= pl[:pledge].typeaction %></td>
+          <td><%= pl[:pledge].status %></td>
+          <td><%= pl[:email] %></td>
+          <td>
+            <% if !@project.target.nil? && pl[:pledge].typeaction == "pledge" && pl[:pledge].status == "refunded" && @computed_data[0][:guaranteed] > @project.target %>
+              <%= link_to "Refund taken from investors", guarantees_path(pledge_id: pl[:pledge].id), method: :post, :remote => true %>
+            <% else %>
+              Not applicable
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </table>
   </div>
 </div>
-<%= link_to "Back to list", user_projects_path(current_user) %>
-
-<h2>Pledges/Guarantees</h2>
-
-<table>
-  <% @array_pledges.each do |pl| %>
-    <tr>
-      <td><%= pl[:pledge].amount_cents.to_f / 100.0 %></td>
-      <td><%= pl[:pledge].typeaction %></td>
-      <td><%= pl[:pledge].status %></td>
-      <td><%= pl[:email] %></td>
-    </tr>
-  <% end %>
-</table>

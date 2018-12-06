@@ -1,7 +1,10 @@
 class PledgesController < ApplicationController
+  before_action :authenticate_user!, only: [:new, :create, :destroy]
+  include Pundit
+  after_action :verify_policy_scoped, only: [:index], unless: :skip_pundit?
 
   def index
-    @pledges = Pledge.where(user_id: current_user.id).sort_by { |pl| pl.typeaction }
+    @pledges = policy_scope(Pledge).where(user_id: current_user.id).sort_by { |pl| pl.typeaction }
   end
 
   def new
@@ -68,6 +71,10 @@ class PledgesController < ApplicationController
   end
 
   private
+
+  def skip_pundit?
+    devise_controller? || params[:controller] =~ /(^(rails_)?admin)|(^pages$)/
+  end
 
   def get_description(pledge)
     descr = pledge.typeaction.capitalize + " for "

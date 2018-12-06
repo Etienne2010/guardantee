@@ -1,0 +1,36 @@
+.explanation {
+  margin-top: 40px;
+  margin-left: 20px;
+  color: black;
+  width: 75vw;
+}
+
+.flexexplanation {
+  display: flex;
+  justify-content: space-between;
+  align-items: top;
+}
+
+.paragraph {
+  padding: 15px;
+  flex: 0 0 250px;
+}
+
+.container {
+  width: 75vw;
+}
+
+.row {
+  width: 75vw;
+}
+
+.title-par {
+  font-weight: bold;
+  font-size: 25px;
+}
+
+.text-par {
+  font-weight: normal;
+  font-style: italic;
+  font-size: 16px;
+}

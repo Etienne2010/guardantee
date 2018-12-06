@@ -2,17 +2,25 @@
   display: flex;
   justify-content: center;
   align-items: top;
+  padding: 20px;
 }
 
 .col-right {
+  background-color: $medium-gray;
   padding: 30px;
-  flex: 1 0 auto;
+  flex: 0 1 auto;
   align-content: flex-end;
+  border-radius: 3px;
+  color: black;
 }
 
 .col-left {
+  background-color: $medium-gray;
   padding: 30px;
   flex: 0 1 auto;
+  border-radius: 3px;
+  font-weight: bold;
+  color: black;
 }
 
 .column {
@@ -20,3 +28,6 @@
   align-content: flex-end;
 }
 
+.container-g {
+
+}
