@@ -1,13 +1,26 @@
 #topay {
-  background-color: white;
+  background-color: $brand-danger;
   border: none;
+  margin: 20px 0px;
+  width: 100%;
+  border-radius: 3px;
 }
 
-ul {
-  list-style-type: none;
+.divul {
+  margin: 20px 0px;
+  background-color: $brand-danger;
+  border-radius: 3px;
 }
 
-li:hover {
+#inp_amount {
+  color: black;
+}
+
+.li {
+  width: 100%;
+}
+
+.li:hover {
   cursor: grab;
 }
 
@@ -18,4 +31,14 @@ table {
 
 td {
   text-align: right;
+}
+
+.banner-g {
+  width: 100vw;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+#project_num {
+  display: none;
 }
